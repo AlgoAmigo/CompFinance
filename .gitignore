@@ -7,4 +7,5 @@
 *.gz
 *.log
 *.txt
+*.ps
 !siegel.pdf
