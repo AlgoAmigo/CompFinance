@@ -9,3 +9,4 @@
 *.txt
 *.ps
 !siegel.pdf
+*.asv
