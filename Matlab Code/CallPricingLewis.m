@@ -18,7 +18,7 @@ function call = CallPricingLewis(S0, K,T,r,q, params, im, model)
 
 %Author: Lorenzo Torricelli
 
-%%other possible implementation: 1) take out the contant K of thhe intergal:
+%%other possible implementation: 1) take out the constant K of thhe intergal:
 %% 2) replace the intergal from -trunc to trunc with 2*Re(integrand)
 
 

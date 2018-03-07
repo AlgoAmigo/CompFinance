@@ -1,9 +1,8 @@
-%% Implied Volatility in a stochastic volatility model
+%% Implied Volatility
 function [surf, prices] = ImplVolSurf(S0, K, T, r, q, params, model)
 %Creating the implied volatility surface for a prespecified model.
+%(Problem 4a)
 
-%simN: number of simulations
-%stepsN: number of time steps
 %S0: starting price
 %T: time horizon of simulation
 %r: riskfree rate
@@ -11,21 +10,23 @@ function [surf, prices] = ImplVolSurf(S0, K, T, r, q, params, model)
 %params: parameter of the model
 %model: the used model, at the moment only 'HESTON' is available
 
+%Author: Aaron Wittmann and Jan Keesen
+
 % preallocating for speed
-prices = zeros(length(K),length(T));
-surf = zeros(length(K),length(T));
+prices = zeros(length(T),length(K));
+surf = zeros(length(T),length(K));
 
 % Determine the model
 switch(model)
     case 'HESTON'
         % The Transform is regular for im>1, so 1.1 is a reasonable choice
         im = 1.1;
-        for j=1:length(T)
-            for i=1:length(K)
+        for i=1:length(T)
+            for j=1:length(K)
                 % calculating the price for different strikes K and
                 % maturities T with Lewis Method
-                prices(i,j) = CallPricingLewis(S0, K(i),T(j),r,q, params, im,  model);
-                surf(i,j) = BSimpVolNewton(S0, K(i), T(j), r, prices(i,j), q);
+                prices(i,j) = CallPricingLewis(S0, K(j), T(i), r, q, params, im, model);
+                surf(i,j) = BSimpVolNewton(S0, K(j), T(i), r, prices(i,j), q);
             end
         end
     otherwise
