@@ -1,4 +1,3 @@
-
 function price= BSprice(S0, K, r, T, sigma, q)
 %%Black Scholes price implied volatility of a dividend-payinng asset 
 
