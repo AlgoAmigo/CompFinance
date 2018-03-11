@@ -1,0 +1,104 @@
+
+\documentclass[12pt]{article}
+
+\usepackage[english]{babel}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+
+\usepackage{color}
+
+\usepackage{ifpdf}
+
+\usepackage[plainpages=false,colorlinks=true,pdfpagelabels,pdfborderstyle={/S/U/W 1}]{hyperref}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}
+\newtheorem{satz}[defi]{Satz}
+\newtheorem{lemma}[defi]{Lemma}
+\newtheorem{cor}[defi]{Korollar}
+\newtheorem{bem}[defi]{Bemerkung}
+\newtheorem{bsp}[defi]{Beispiel}
+\newtheorem{nota}[defi]{Notation}
+\usepackage{mathrsfs}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\newcommand{\C}{C_{BS}}
+\begin{document}
+\tableofcontents 
+
+%%Basic Setup
+
+\section{The Implied Volatility}
+
+It is well known, that the price of an european call option in the Black-Scholes Model is given by:
+$$C_{BS}(S;K;T;r,\sigma)=S\Phi(d_+)-Ke^{-rT}\Phi(d_-)$$
+$$d_+=\frac{log(S/K)+(r+\sigma^2/2)T}{\sigma\sqrt{T}}$$
+$$d_-=d_+-\sigma\sqrt{T}$$
+where $\Phi$ denotes the standard normal cumulative distribution function.
+Before introducing the concept of implied volatility, we want to present some basic properties of $C_{BS}$in the following Lemma.
+\begin{lemma}
+\end{lemma}
+\emph{Proof:}\\
+%%nurnoch abtippen
+\qed\\
+By assumption our market is arbitrage-free by this fact we can easily see, that we have $S-Ke^{-rT}<C(T,K)<S$.
+Furthermore we have $\lim_{\sigma\rightarrow 0}C_{BS}(\sigma)=S-Ke^{-rT}$, $\lim_{\sigma\rightarrow +\infty}C_{BS}(\sigma)=S$ and
+$\partial_\sigma C_{BS}>0$.\\
+Now we set
+$$C(T,K)=\C(S,K,T,r,\sigma(S,K,T,r)).$$
+Because of Lemma ?? the equation above has exactly one solution $\sigma(S,K,T,r)$ given by
+$$\sigma(S,K,T,r)=\C^{-1}(S,K,T,r,C(T,K)),$$
+where $\C^{-1}(S,K,T,r,\cdot)$ is the inverse of $\C$ as a function of $\sigma$.
+Such a solution is called Black-Scholes implied volatility. This implies, that implied volatility is not constand.
+The following lemma is the reason, why talking about vanilla options is meaningful.
+\begin{lemma}
+For Put and Call options with the same maturity and the same strike price the implied volatility of the Put Option coincides with the implied volatility of the Call Option.
+\end{lemma}
+\emph{Proof:}\\
+%%nurnoch abtippen
+\qed\\
+However the observed return distriburions are asymetric(skewed) and fat-tailed (leptokuric) which means, that for different K and T a different amount of options will end in the mony, that Black-Scholes Model would predict.
+Because of the one to one correspondence between price and volatility, seen above one could say, that the implied volatility is just a different mathematical expression for the price.
+In practice finding the implied volatility is the most common usage of the Black-Scholes formular. This is usefull to detect how market imlied volatility differs from a constant(as assumed in the Black-Scholes Model) and hence to detecthow the observed price distribuion implied by the market differs from log-normal. These observations are used to find models, which fit better to the market.
+\section{The Volatility Surface}
+The section before gives a good motivation to consider the implied volatility $\sigma(S,K,T,r)$ for different values of K and T which ends up in a surface$\sigma(K,T)$. The volatility surface.
+\subsection{Basic properties}
+Since we have $\sigma(K,T)$ as a function of $T$ and $K$ we can fix $K$ and analyse $\sigma(K,T)$ as a function in T which expresses the volatility term structure. On the other hand we can fix $T$ and get a function of K which we can use to analyse the differnce from a constant value as explained above. In the followig we will often talk about moneyness. By moneyness the ratio $S/K$ of $log(S/K)$ is ment.
+By the no-arbitrage condition of our market we have the following three basic properties of the volatility surface:
+\begin{enumerate}
+\item the volatility surface is positve, i.e. $\sigma(T,K)>0 \forall K \in [K_{min},K_{max}],T \in [T_{min},T_{max}]$
+\item for a fiexed T $\sigma(K,T)$ is a convex function of K and has a lower concavity bound.
+\item short term volatilites with positive (resp. negative moneyness)are normally higher (resp. lower) than their long term counterparts and an asymptotic trend is present as $T \rightarrow \infty$, which reflects the convergence of option prices to a stationary distribution.
+\end{enumerate}
+As stated in 2. $\sigma(K)$ is convex. If the shaoe is symmetic we are talkig about a (volatility) smile ,otherwise(asymmetric) we talk about the (volatility) skew.
+%% Beispiel Bilder
+%%Weiter oben Beispiele für Volatility Surfaces
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%Fat tailed stuff and statisical micro and macro interpretation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Dynamics}
+Over time the price of the underlying changes and so does the price of the our Call Option $C(T,K)$. Hence our Volatility surface changes over time as well and is therfore stochastic. In the following we introduce two commonly used approaches.\\\\
+Stickiness-by-strike:Here we assume that the implied volatility is independent of S, i.e. there is a function F such that $\sigma(S,T,K,r)=F(T,K,r)$.\\
+Using the chainrule we get the following:
+$$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,K,r)=\frac{\partial\C}{\partial S}(\sigma(T,K)).$$
+So we found an easy formular for the calculation of the Greek $\frac{\partial C}{\partial S}$. We just have to calculate the Black-Scholes delta and evaluate in $\sigma(T,K)$ which is the observed implied volatility. \\\\
+Stickiness-by-delta: Here we assume that the implied volatility only depends on the moneyness (and T and r of course), i.e there is a function F such that $\sigma(S,T,K,r)=F(T,S/K,r)$. Computing Delta yields:
+$$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{1}{K}\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,S/K,r) $$.
+As in the stickiness by strike we have that Delta $\frac{\partial C}{\partial S}$ is the Black-Scholes Delta plus a correction term dependend of Vega and inversely proportional to $K$. Since $\sigma(S,T,K,r)$ is negativly skewed it is decreasing in $K$. Hence, F is increasing in S. Thus the correction term is positive.\\
+
+\subsection{The laverage effect and the volatility skew}
+
+\section{Local Volatility}
+
+\subsection{Implied volatility as an "average" of local volatility}
+
+
+\end{document}
