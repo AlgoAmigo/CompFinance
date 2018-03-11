@@ -27,7 +27,7 @@ sigma = BSimpVolAnalyticBrSu(S0, T, marketValue);
 previousSigma = 0;   
 
 
-while abs(sigma - previousSigma ) >epsilon,
+while abs(sigma - previousSigma ) >epsilon
   
     previousSigma = sigma;
 	
@@ -38,11 +38,11 @@ while abs(sigma - previousSigma ) >epsilon,
 	sigma = previousSigma  - ((BSEvaluation- marketValue) ./ vegaEvaluation ); %newton iterator
 	
 	n = n + 1;
-	if n > maxiter,
+	if n > maxiter
 		error('No solution is found');
 	end
 end
-if n == 0,
+if n == 0
 		error('No iteration performed');
 end
 

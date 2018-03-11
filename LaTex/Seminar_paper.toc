@@ -1,0 +1,8 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}The Implied Volatility}{1}{section.1}
+\contentsline {section}{\numberline {2}The Volatility Surface}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Basic properties}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Dynamics}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}The laverage effect and the volatility skew}{4}{subsection.2.3}
+\contentsline {section}{\numberline {3}Local Volatility}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Implied volatility as an "average" of local volatility}{4}{subsection.3.1}
