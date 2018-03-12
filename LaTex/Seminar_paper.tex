@@ -20,10 +20,7 @@
 \newcommand{\C}{C_{BS}}
 \newcommand{\p}{\partial}
 \begin{document}
-\tableofcontents
-\newpage
-
-
+\section{Basic Setup}
 In the following we assume having a liquid market with options trading at strikes $K_{min}<K<K_{max}$ and time-to-maturities $T_{min}<T<T_{max}$. We denote the observed price of a call option by $C(T,K)$ and define $S$ and $r$ to be the observed market price and the observed interest rate.
 
 \section{The Implied Volatility}
@@ -40,8 +37,8 @@ Before introducing the concept of implied volatility, we want to present some ba
 By assumption our market is arbitrage-free by this fact we can easily see, that we have $S-Ke^{-rT}<C(T,K)<S$.
 Furthermore it holds that $\lim_{\sigma\rightarrow 0}C_{BS}(\sigma)=S-Ke^{-rT}$, $\lim_{\sigma\rightarrow +\infty}C_{BS}(\sigma)=S$ and
 $\partial_\sigma C_{BS}>0$\\
-For the limit we just have to consider $d_+$ and $d_-$.We obviously have: $$\lim_{\sigma\rightarrow 0} d_+= \infty,\lim_{\sigma\rightarrow \infty} d_+= \infty, \lim_{\sigma\rightarrow 0} d_-= \infty \text{ and }\lim_{\sigma\rightarrow \infty} d_-= -\infty .$$
-Plugging in in (1) gives the claim since $\Phi$ is a cumulatice distribution function. Moreover we have:
+For the limits we just have to consider $d_+$ and $d_-$. We have: $$\lim_{\sigma\rightarrow 0} d_+= \infty,\lim_{\sigma\rightarrow \infty} d_+= \infty, \lim_{\sigma\rightarrow 0} d_-= \infty \text{ and }\lim_{\sigma\rightarrow \infty} d_-= -\infty .$$
+Plugging in in (1) gives the claim since $\Phi$ is a cumulative distribution function. Moreover we have:
 $$\p_\sigma\C=S\p_\sigma\Phi(d_+)-e^{-rT}K\p_\sigma\Phi(d_-)=S\phi(d_+)\p_\sigma d_+-e^{-rT}K\phi(d_-)\p_\sigma d_- $$
 $$d_+(S\phi(d_+)-e^{-rT}K\phi(d_-))+e^{-rT}K\sqrt{T}\phi(d_-)=e^{-rT}K\sqrt{T}\phi(d_-)>0,$$
 where the last equation follows from the fact that $S\phi(d_+)=e^{-rT}K\phi(d_-)$. Here $\phi$ denotes the density of the standard normal distribution.\\
@@ -54,22 +51,22 @@ $$\sigma(S,K,T,r)=\C^{-1}(S,K,T,r,C(T,K)),$$
 where $\C^{-1}(S,K,T,r,\cdot)$ is the inverse of $\C$ as a function of $\sigma$.
 Such a solution is called Black-Scholes implied volatility.\\
 Since for Put and Call options with the same maturity and the same strike price the implied volatility of the Put Option coincides with the implied volatility of the Call Option talking about vanilla options is meaningful.\\
-The statment above is a consequence of the call-put-parity. Indeed we have:
+The statment above is a consequence of the put-call-parity. Indeed we have:
 \begin{align*}
 \C-P_{BS}&=S\Phi(d_+)-Ke^{-rT}\Phi(d_-)-Ke^{-rT}\Phi(-d_-)+S\Phi(-d_+)\\
 &=S(\Phi(d_+)+\Phi(-d_+))-Ke^{-rT}(\Phi(d_-)+\Phi(d_-))\\
 &=S-Ke^{-rT}
 \end{align*}
 Assume now, that the implied volatility of the put and the call do not coincide, then we get:
-$\C-P_{BS}\neq S-Ke^{-rT}$ which contradicts the call-put-parity.\\
-However the observed return distriburions are asymetric (skewed) and fat-tailed which means, that for different K and T a different amount of options will end in the money, that Black-Scholes Model would predict. 
-Because of the one to one correspondence between price and volatility (seen above) one could say, that the implied volatility is just a different mathematical expression for the price.
-In practice finding the implied volatility is the most common usage of the Black-Scholes formular. This is usefull to detect how market imlied volatility differs from a constant (as assumed in the Black-Scholes Model) and to analyse how the observed price distribuion implied by the market differs from log-normal. These observations can be used to find models, which fit better to the market.
+$\C-P_{BS}\neq S-Ke^{-rT}$ which contradicts the put-call-parity.\\
+However the observed return distributions are asymetric (skewed) and fat-tailed which means, that for different K and T a different amount of options will end in the money, than Black-Scholes Model would predict. 
+Because of the one-to-one correspondence between price and volatility (seen above) one could say, that the implied volatility is just a different mathematical expression for the price.\\
+In practice finding the implied volatility is the most common usage of the Black-Scholes formular. This is usefull to detect how market implied volatility differs from a constant (as assumed in the Black-Scholes Model) and to analyse how the observed price distribuion implied by the market differs from log-normal. These observations can be used to find models, which fit better to the market.
 
 \section{The Volatility Surface}
 The section before gives a good motivation to consider the implied volatility $\sigma(S,K,T,r)$ for different values of K and T which ends up in a surface $\sigma(K,T)$. The volatility surface.
 
-\subsection{Basic properties}
+\subsection{Basic Properties}
 Since we have $\sigma(K,T)$ as a function of $T$ and $K$ we can fix $K$ and analyse $\sigma(K,T)$ as a function in T which expresses the volatility term structure. On the other hand we can fix $T$ and get a function of K which we can use to analyse the differnce from a constant value as explained above. In the followig we will often talk about moneyness. By moneyness the ratio $S/K$ of $\log(S/K)$ is ment.
 By the no-arbitrage condition of our market we have the following three basic properties of the volatility surface:
 \begin{enumerate}
@@ -77,38 +74,27 @@ By the no-arbitrage condition of our market we have the following three basic pr
 \item for a fiexed T $\sigma(K,T)$ is a convex function of K and has a lower concavity bound.
 \item short term volatilites with positive (resp. negative moneyness)are normally higher (resp. lower) than their long term counterparts and an asymptotic trend is present as $T \rightarrow \infty$, which reflects the convergence of option prices to a stationary distribution.
 \end{enumerate}
-As stated in 2. $\sigma(K)$ is convex. If the shape is symmetic we are talkig about a (volatility) smile ,otherwise(asymmetric) we talk about the (volatility) skew.\\
-%% Beispiel Bilder
-%%Weiter oben Beispiele für Volatility Surfaces
-%%%%%%%Bla Bla Bla
-For this there are at least three explenations:
-\begin{enumerate}
-\item Statistical:
-\item Micro-economical:
-\item Macro-economical:
-\end{enumerate}
-
-
+As stated in 2. $\sigma(K)$ is convex. If the shape is symmetic we are talkig about a (volatility) smile , otherwise (asymmetric) we talk about the (volatility) skew.\\
+The volatility smile is an indicator for fat-tailes. That means extreme positive or negative events which affect the returns are much more likely than the normal ditribution predicts.
 \subsection{Dynamics}
-Over time the price of the underlying changes and so does the price of the our Call Option $C(T,K)$. Hence our Volatility surface changes over time as well and is therfore stochastic. In the following we introduce two commonly used approaches.\\\\
-Stickiness-by-strike: Here we assume that the implied volatility is independent of S, i.e. there is a function F such that $\sigma(S,T,K,r)=F(T,K,r)$.\\
+Over time the price of the underlying changes and so does the price of the our Call Option $C(T,K)$. Hence our volatility surface changes over time as well and is therfore stochastic. In the following we introduce two commonly used approaches.\\\\
+\textbf{Stickiness-by-strike}: Here we assume that the implied volatility is independent of S, i.e. there is a function F such that $\sigma(S,T,K,r)=F(T,K,r)$.\\
 Using the chainrule we get the following:
 $$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,K,r)=\frac{\partial\C}{\partial S}(\sigma(T,K)).$$
 So we found an easy formular for the calculation of the Greek $\frac{\partial C}{\partial S}$. We just have to calculate the Black-Scholes delta and evaluate in $\sigma(T,K)$ which is the observed implied volatility. \\\\
-Stickiness-by-delta: Here we assume that the implied volatility only depends on the moneyness (and T and r of course), i.e there is a function F such that $\sigma(S,T,K,r)=F(T,S/K,r)$. Computing Delta yields:
+\textbf{Stickiness-by-delta}: Here we assume that the implied volatility only depends on the moneyness (and T and r of course), i.e there is a function F such that $\sigma(S,T,K,r)=F(T,S/K,r)$. Computing Delta yields:
 $$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{1}{K}\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,S/K,r) .$$
-As in the stickiness by strike we have that Delta $\frac{\partial C}{\partial S}$ is the Black-Scholes Delta plus a correction term dependend of Vega and inversely proportional to $K$. Since $\sigma(S,T,K,r)$ is negativly skewed it is decreasing in $K$. Hence, F is increasing in S. Thus the correction term is positive.\\
+As in the stickiness-by-strike we have that Delta $\frac{\partial C}{\partial S}$ is the Black-Scholes Delta plus a correction term dependend of Vega and inversely proportional to $K$. Since $\sigma(S,T,K,r)$ is negatively skewed it is decreasing in $K$. Hence, F is increasing in S. Thus the correction term is positive.\\
 
-%%% Both stickiness by ......
-
-\subsection{The leverage effect and the volatility skew}
-As said above in real marktets the volatility is not constant. On can observe that in general the volatility increases if the asset price drops and that the volatility decreases if the prices increase. In other words volatility and returns are negativly correlated. This effect is called the leverage effect. The leverage effect implies that the return distirbutions are are left skewed. That means that the left tail is flatter than the left tail of the normal distribution.The financial interpretation of the left-skewness is that low returns are more likely than high returns and therefore more put options will end in the money compared to an hypothetical log normal asset (as in the Black-Scholes Model).
+\subsection{The Leverage Effect and the Volatility Skew}
+As said above in real marktets the volatility is not constant. On can observe that in general the volatility increases if the asset price drops and that the volatility decreases if the prices increase. In other words volatility and returns are negatively correlated. This effect is called the leverage effect.\\
+The leverage effect implies that the return distributions are are left-skewed. That means that the left tail is flatter than the left tail of the normal distribution. The financial interpretation of the left-skewness is that low returns are more likely than high returns and therefore more put options will end in the money compared to an hypothetical log-normal asset (as in the Black-Scholes Model).
 
 
 \section{Local Volatility}
-In the section above we saw that the volatility surface is not flat and varies with the passing of time. This implies that the asset volatility is not constat but stochastic. One can show that one can define a stoctic process $\sigma_t$ for the asset brownian diffusion volatility, which is consistent with the observed market implied volatility. The process $\sigma_t$ is called implied volatility. In fact the local volatility is a stochastic process which represents the asset dynamics, which are consisten with the observed market behaviour.
+In the section above we saw that the volatility surface is not flat and varies with the passing of time. This implies that the asset volatility is not constant, but stochastic. One can show that one can define a stoctic process $\sigma_t$ for the asset brownian diffusion volatility, which is consistent with the observed market implied volatility. The process $\sigma_t$ is called local volatility. In fact the local volatility is a stochastic process which represents the asset dynamics, which are consistent with the observed market behaviour.\\
 Since $\sigma_t$ depends of the observe market data it should not be used in a predictive way.\\
-The following procedure describes how local volatility is used in practice for pricing unsing the well known Dupire equation:
+The following procedure describes how local volatility is used in practice for pricing using the well known Dupire equation:
 $$\frac{\p C}{\p t}=\frac{\sigma_t^2 K^2}{2}\frac{\p^2 C}{\p^2 K}-\mu K \frac{\p C}{\p K}+(\mu-r)C.$$
 \begin{enumerate}
 \item Observe the volatility surface,
@@ -118,18 +104,31 @@ $$\frac{\p C}{\p t}=\frac{\sigma_t^2 K^2}{2}\frac{\p^2 C}{\p^2 K}-\mu K \frac{\p
 \end{enumerate}
 
 
-\subsection{Implied volatility as an "average" of local volatility}
-$$x(K,S)=log(\frac{K}{Se^{\mu t}})$$		
+\subsection{Implied Volatility as an "Average" of Local Volatility}
+Before stating the result we have to introduce some notation. In the following we will denote 
+$$x(K,S)=log(\frac{K}{Se^{\mu t}}).$$
+Now we can express our observed call price in termes of $x$:
 $$C(K,t)=C(Se^{x(K,S)+\mu t},t)$$
-$$\frac{\p C}{\p t}=\frac{\p C}{\p t}+\mu\frac{\p C}{\p x},\frac{\p C}{\p K}=\frac{1}{K}\frac{\p C}{\p x},\frac{\p^2 C}{\p^2 K}=\frac{1}{K^2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x})$$
-$$\frac{\p C}{\p t}=\frac{\sigma_t^2}{2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x})+(\mu-r)C$$
-$$2tI\frac{\p I}{\p t}+I^2-\sigma_t^2(1-\frac{x}{I}\frac{\p I}{\p x})^2-\sigma_t^2 t I\frac{\p^2 I}{\p^2 x}+ \frac{\sigma_t^2}{4}t^2I^2\frac{\p^2I}{\p^2x}=0$$
-$$\frac{\p I}{\p t}= \frac{\p I}{\p t}+\mu K \frac{\p I}{\p K}, \frac{\p I}{\p x}= K\frac{\p I}{\p K}, \frac{\p^2 I}{\p^2 x}=K^2(\frac{\p I}{\p K}+\frac{\p^2 I}{\p^2 K})$$
+By the chain rule we have the following:
+$$\frac{\p C}{\p t}=\frac{\p C}{\p t}+\mu\frac{\p C}{\p x},~\frac{\p C}{\p K}=\frac{1}{K}\frac{\p C}{\p x}\text{ and }\frac{\p^2 C}{\p^2 K}=\frac{1}{K^2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x}).$$
+Now we plug in in the above stated Dupire equation and get:
+\begin{align}\frac{\p C}{\p t}=\frac{\sigma_t^2}{2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x})+(\mu-r)C\end{align}
+As the observed price we can express the implied volatility $I(x,t)$ as a funcion of $x$. After some calculations involving the chain rule and setting $C(x,t)=\C(K,t,I(x,t))$, together with equation (3) we get:
+\begin{align}2tI\frac{\p I}{\p t}+I^2-\sigma_t^2(1-\frac{x}{I}\frac{\p I}{\p x})^2-\sigma_t^2 t I\frac{\p^2 I}{\p^2 x}+ \frac{\sigma_t^2}{4}t^2I^2\frac{\p^2I}{\p^2x}=0\end{align}
+Resubstituting $I(x,t)=I(\log(\frac{K}{Se^{\mu t}}),t)$ and applying the chain rule again yields:
+$$\frac{\p I}{\p t}= \frac{\p I}{\p t}+\mu K \frac{\p I}{\p K},~ \frac{\p I}{\p x}= K\frac{\p I}{\p K}\text{ and } \frac{\p^2 I}{\p^2 x}=K^2(\frac{\p I}{\p K}+\frac{\p^2 I}{\p^2 K})$$
+Now we can solve (4) for $\sigma_t$ and get:
 $$\sigma_t^2=\frac{2tI(\frac{\p I}{\p t}+\mu K\frac{\p I}{\p K})+I^2}{(1+d_+K\sqrt{t}\frac{\p I}{\p K})^2 + tI^2K^2(\frac{\p^2 I}{\p^2 K}-d_+(\frac{\p}{K})^2\sqrt{t})}$$
+If we now assume that $\lim_{x \rightarrow \pm \infty}\sigma(x)=\sigma^\pm$ exists uniformly and is continuous in $t$ the derivatives depending on $x$ in (4) cancel and we get the following much nicer expression:
 $$(\sigma_t^\pm)^2=2tI\frac{\partial I}{\partial t} + I^2=\frac{\partial}{\partial t}(tI^2)$$
+The fundamental theorem of calculus yields:
 $$I^2(t,x)=\frac{1}{t}\int_{0}^t(\sigma_u^\pm)^2du$$
-$$I^2-\sigma_0^2( 1-\frac{x}{I}\frac{\partial I}{\partial x})^2$$
-$$I^2(0,x)=\frac{x}{\int_0^x\frac{1}{\sigma_0(u)}du}$$
+This means, that the implied volatility is approximately the time average of the local volatility for large strikes.
+Now let $t \rightarrow 0$. Then we get
+$$I^2-\sigma_0^2( 1-\frac{x}{I}\frac{\partial I}{\partial x})^2.$$
+The differential equation above has the solution:
+$$I^2(0,x)=\frac{x}{\int_0^x\frac{1}{\sigma_0^2(u)}du}.$$
+The interpretation of the last statement ist that at a very short maturity the implied volatility at log-forwad-moneyness (this is our $x$ defined above) is the harmonic mean of the local volatility.
 
 
 
