@@ -21,19 +21,19 @@ T=(Tmin:dt:Tmax)';
 dk=(Kmax-Kmin)/(n-1);
 K=(Kmin:dk:Kmax)';
 
-%%Local volatility surface from ivols
-[Ktab, Ttab]=meshgrid(K, T);
-%%Implied volatility surface
-alpha=0.33;
-ImpliedVolSurface=ones(n).*0.15 + 0.15.*(ones(n).*0.5 + alpha*Ttab).*(.5*Ktab./S0 - 1.5*ones(n)).^2./ ... 
-    (2*(Ktab./S0)+ones(n)) ;  %%Synthetically generated surface from the last maturity and last stirke to first maturity and first stirke
-ImpliedVolSurface=flipud(ImpliedVolSurface); %%Just to read the synthetic data in the right order
-
-%Computing prices:
-PriceSurface = BSprice(S0, Ktab, r, Ttab, ImpliedVolSurface, q);
-
+% %%Local volatility surface from ivols
+% [Ktab, Ttab]=meshgrid(K, T);
+% %%Implied volatility surface
+% alpha=0.33;
+% ImpliedVolSurface=ones(n).*0.15 + 0.15.*(ones(n).*0.5 + alpha*Ttab).*(.5*Ktab./S0 - 1.5*ones(n)).^2./ ... 
+%     (2*(Ktab./S0)+ones(n)) ;  %%Synthetically generated surface from the last maturity and last stirke to first maturity and first stirke
+% ImpliedVolSurface=flipud(ImpliedVolSurface); %%Just to read the synthetic data in the right order
+% 
+% %Computing prices:
+% PriceSurface = BSprice(S0, Ktab, r, Ttab, ImpliedVolSurface, q);
+%   PriceSurface = prices;
 %Now compute the local volatility surface.
-locSurf = locVolSurf(K,T,r,q,ImpliedVolSurface,'BBF',S0);
+locSurf = locVolSurf(K,T,r,q,PriceSurface,'DUPIRE');
 
 simN = 100000;
 SimPrices = BSEulerMod(simN,dt,S0,K,T,r,q,locSurf,Handle);
@@ -48,3 +48,13 @@ for i = 3:length(T)-1
 end
 
 RelError = abs(simPriceSurf-PriceSurface(3:39,2:38))./PriceSurface(3:39,2:38);
+
+
+%%%%%%%%%%%%%%%%%
+% Exercise 5
+% Time average of local volatility at large strikes:
+integrand = locSurf(:,end).^2;
+ImplVolAppr = ones(length(T)-3,1);
+for i = 3:length(T)-2
+    ImplVolAppr(i-1) = sqrt(1/T(i)*trapz(T(2:i),integrand(1:i-1)));
+end
