@@ -10,6 +10,7 @@ function price = BSEulerMod(simN, dt, S0,K, T, r, q, locSurf, Handle)
 %sigma: volatility
 
 %Author: Lorenzo Torricelli
+%Modiefied by Aaron Wittmann and Jan Keesen
 
 %rng(123, 'twister'); %seeding the Mersenne Twister
 

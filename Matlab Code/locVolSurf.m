@@ -1,18 +1,21 @@
 %% Local Volatility in a stochastic volatility model
 function surf = locVolSurf(K, T, r, q, inputData, method, S0)
 % This function computes the local volatility surface by using either
-% Dupires formula or the BBF formula. (Problem 4b)
+% Dupires formula or the BBF formula.
 
 %If the Dupire-formula is used, the following parameters are used:
-%   K: strike price
-%   T: time horizon of simulation
-%   r: riskfree rate
-%   q: dividend yield
-%   inputData: price-matrix
+%K: strike price
+%T: time horizon
+%r: riskfree rate
+%q: dividend yield
+%inputData: price-matrix or implied volatility matrix
+
 %If the BBF formula is used, the additional parameter is:
-%   S0: starting price
+%S0: starting price
 
 %method: the used method. Either BBF or DUPIRE.
+
+%Author: Aaron Wittmann and Jan Keesen
 
 switch method
     case 'DUPIRE'

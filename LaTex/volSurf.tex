@@ -1,0 +1,26 @@
+\section{The Volatility Surface}
+The section before gives a good motivation to consider the implied volatility $\sigma(S,K,T,r)$ for different values of K and T which ends up in a surface $\sigma(K,T)$. The volatility surface.
+
+\subsection{Basic Properties}
+Since we have $\sigma(K,T)$ as a function of $T$ and $K$ we can fix $K$ and analyse $\sigma(K,T)$ as a function in T which expresses the volatility term structure. On the other hand we can fix $T$ and get a function of K which we can use to analyse the differnce from a constant value as explained above. In the followig we will often talk about moneyness. By moneyness the ratio $S/K$ of $\log(S/K)$ is ment.
+By the no-arbitrage condition of our market we have the following three basic properties of the volatility surface:
+\begin{enumerate}
+\item the volatility surface is positve, i.e. $\sigma(T,K)>0 ~\forall K \in [K_{min},K_{max}],\\T \in [T_{min},T_{max}]$
+\item for a fiexed T $\sigma(K,T)$ is a convex function of K and has a lower concavity bound.
+\item short term volatilites with positive (resp. negative moneyness)are normally higher (resp. lower) than their long term counterparts and an asymptotic trend is present as $T \rightarrow \infty$, which reflects the convergence of option prices to a stationary distribution.
+\end{enumerate}
+As stated in 2. $\sigma(K)$ is convex. If the shape is symmetic we are talkig about a (volatility) smile , otherwise (asymmetric) we talk about the (volatility) skew.\\
+The volatility smile is an indicator for fat-tailes. That means extreme positive or negative events which affect the returns are much more likely than the normal ditribution predicts.
+\subsection{Dynamics}
+Over time the price of the underlying changes and so does the price of the our Call Option $C(T,K)$. Hence our volatility surface changes over time as well and is therfore stochastic. In the following we introduce two commonly used approaches.\\\\
+\textbf{Stickiness-by-strike}: Here we assume that the implied volatility is independent of S, i.e. there is a function F such that $\sigma(S,T,K,r)=F(T,K,r)$.\\
+Using the chainrule we get the following:
+$$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,K,r)=\frac{\partial\C}{\partial S}(\sigma(T,K)).$$
+So we found an easy formular for the calculation of the Greek $\frac{\partial C}{\partial S}$. We just have to calculate the Black-Scholes delta and evaluate in $\sigma(T,K)$ which is the observed implied volatility. \\\\
+\textbf{Stickiness-by-delta}: Here we assume that the implied volatility only depends on the moneyness (and T and r of course), i.e there is a function F such that $\sigma(S,T,K,r)=F(T,S/K,r)$. Computing Delta yields:
+$$\frac{\partial C}{\partial S}=\frac{\partial\C}{\partial S}(\sigma(T,K))+\frac{1}{K}\frac{\C}{\sigma}(\sigma(T,K))\frac{\partial F}{\partial S}(T,S/K,r) .$$
+As in the stickiness-by-strike we have that Delta $\frac{\partial C}{\partial S}$ is the Black-Scholes Delta plus a correction term dependend of Vega and inversely proportional to $K$. Since $\sigma(S,T,K,r)$ is negatively skewed it is decreasing in $K$. Hence, F is increasing in S. Thus the correction term is positive.\\
+
+\subsection{The Leverage Effect and the Volatility Skew}
+As said above in real marktets the volatility is not constant. On can observe that in general the volatility increases if the asset price drops and that the volatility decreases if the prices increase. In other words volatility and returns are negatively correlated. This effect is called the leverage effect.\\
+The leverage effect implies that the return distributions are are left-skewed. That means that the left tail is flatter than the left tail of the normal distribution. The financial interpretation of the left-skewness is that low returns are more likely than high returns and therefore more put options will end in the money compared to an hypothetical log-normal asset (as in the Black-Scholes Model).

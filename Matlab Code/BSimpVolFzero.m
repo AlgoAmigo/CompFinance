@@ -8,11 +8,11 @@ function [impliedVol] = BSimpVolFzero(S0,K,T,r, marketValue,q)
 %marketValue: observed call option market value
 %q: stock dividend yield
 
-%using Newton-Raphson method. 
+%using fzero. 
 
 %Adapted by Lorenzo Torricelli
+%Modified by Aaron Wittmann and Jan Keesen
 
-%%Tolerance and max iterations
 impliedVol = ones(length(T),length(K));
 for i = 1:length(T)
     it = BSimpVolAnalyticBrSu(S0, T(i),marketValue);

@@ -1,0 +1,192 @@
+\section{Modified Code}
+This section contains all MATLAB functions which we created or modified.
+
+\subsection*{ImplVolSurf}
+    \begin{verbatim}
+function [surf, prices] = ImplVolSurf(S0, K, T, r, q, params, model)
+%Creating the implied volatility surface for a prespecified model.
+
+%S0: starting price
+%K: strike of simulation
+%T: time horizon of simulation
+%r: riskfree rate
+%q: dividend yield
+%params: parameter of the model
+%model: the used model, at the moment only 'HESTON' is available
+
+%Author: Aaron Wittmann and Jan Keesen
+
+% preallocating for speed
+prices = zeros(length(T),length(K));
+surf = zeros(length(T),length(K));
+
+% Determine the model
+switch(model)
+    case 'HESTON'
+        % The Transform is regular for im>1, so 1.1 is a reasonable choice
+        im = 1.1;
+        for i=1:length(T)
+            for j=1:length(K)
+                % calculating the price for different strikes K and
+                % maturities T with Lewis Method
+                prices(i,j) = CallPricingLewis(S0, K(j), T(i), r, q, params, im, model);
+                surf(i,j) = BSimpVolFzero(S0, K(j), T(i), r, prices(i,j), q);
+            end
+        end
+    otherwise
+        error('This function does not support the passed variable.')
+end
+end
+\end{verbatim}
+
+\subsection*{CallPricingLewis}
+
+    \begin{verbatim}
+function call = CallPricingLewis(S0, K,T,r,q, params, im, model)
+%Fourier inversion method using Lewis approach
+
+%S0: spot price
+%K: strike price
+%T: time to matruity
+%r: riskfree rate
+%q: dividend yield
+
+%params: model params (see the cf .m file)
+%model: stochastic model used
+%trunc: value of numerical integral truncation
+
+%%Bonus: im>1 call price: im<0 putprice
+
+%Author: Lorenzo Torricelli
+%Modified by Aaron Wittmann and Jan Keesen
+
+i=1i;
+integrand = @(x)cfLibrary(-(x+i*im),S0,T,r,q,params, model).*K.^(1+i.*(x+i*im))./(i.*(x+i*im)-(x+i*im).^2);
+
+% Relative error of 0.1%
+call = .5*exp(-r*T)/pi * integral(integrand,-Inf,Inf,'AbsTol',1e-6,'RelTol',1e-4);
+call=abs(call);
+end
+\end{verbatim}
+
+\subsection*{BSimpVolFzero}
+\begin{verbatim}
+function [impliedVol] = BSimpVolFzero(S0,K,T,r, marketValue,q)
+% Black-Scholes implied volatility.
+
+%S0: spot price
+%K: strike price
+%r: riskFree rate
+%T: time to maturity
+%marketValue: observed call option market value
+%q: stock dividend yield
+
+%using fzero.
+
+%Adapted by Lorenzo Torricelli
+%Modified by Aaron Wittmann and Jan Keesen
+
+impliedVol = ones(length(T),length(K));
+for i = 1:length(T)
+    it = BSimpVolAnalyticBrSu(S0, T(i),marketValue);
+    for j = 1:length(K)
+        fun = @(x) 	BSprice(S0, K(j), r, T(i), x, q)-marketValue;
+        impliedVol(i,j) = fzero(fun,it);
+    end
+end
+
+return
+\end{verbatim}
+
+\subsection*{locVolSurf}
+\begin{verbatim}
+function surf = locVolSurf(K, T, r, q, inputData, method, S0)
+% This function computes the local volatility surface by using either
+% Dupires formula or the BBF formula.
+
+%If the Dupire-formula is used, the following parameters are used:
+%K: strike price
+%T: time horizon
+%r: riskfree rate
+%q: dividend yield
+%inputData: price-matrix or implied volatility matrix
+
+%If the BBF formula is used, the additional parameter is:
+%S0: starting price
+
+%method: the used method. Either BBF or DUPIRE.
+
+%Author: Aaron Wittmann and Jan Keesen
+
+switch method
+    case 'DUPIRE'
+        surf = localVolFromPrices(K,T, r , q, inputData);
+    case 'BBF'
+        if(~(nargin == 7))
+            error('The amount of passed parameters is not correct.')
+        end
+        surf = localVolFromImplVol(S0, K, T, r, q, inputData);
+    otherwise
+        error('The passed method parameter is not valid. It has to be either DUPIRE or BBF.')
+end
+end
+\end{verbatim}
+
+\subsection*{BSEulerMod}
+\begin{verbatim}
+function price = BSEulerMod(simN, dt, S0,K, T, r, q, locSurf, Handle)
+%Euler scheme for the Black Scholes model
+
+%simN: number of simulations
+%stepsN: number of time steps
+%S0: starting price
+%T: time horizon of simulation
+%r: riskfree rate
+%q: dividend yield
+%sigma: volatility
+
+%Author: Lorenzo Torricelli
+%Modiefied by Aaron Wittmann and Jan Keesen
+
+%rng(123, 'twister'); %seeding the Mersenne Twister
+
+
+%Create first stock price
+price=S0*ones(simN, length(T)-2);
+drift=(r-q)*T(3)*ones(simN,1); %at time 0 there is no evolution
+dWt=normrnd(0,1,simN, 1);
+Kind = find(abs(S0-K(2:end-2))==min(abs(S0-K(2:end-2))),1,'first');
+sigma = locSurf(1,Kind);
+diffusion=sigma.*sqrt(T(3)).*dWt;
+price(:, 2)=price(:, 1)+ price(:, 1).*(drift+diffusion);
+
+if strcmp(Handle, 'TRUNC')==1
+    price(price(:,2)>150,2) = 150;
+    price(price(:,2)<50,2) = 50;
+end
+
+%Create other stock prices
+drift=(r-q)*dt*ones(simN,1);
+for i = 3:length(T)-2
+    [I,~] = find((abs(price(:, i-1)-K(2:end-2)')-min(abs(price(:, i-1)-K(2:end-2)'),[],2))'==0,simN,'first');
+    sigma = locSurf(i-1,I)';
+    dWt=normrnd(0,1,simN, 1);
+    diffusion=sigma.*sqrt(dt).*dWt;
+    price(:, i)=price(:, i-1)+ price(:, i-1).*(drift+diffusion);
+    if strcmp(Handle, 'TRUNC')==1
+        price(price(:,i)>170,i) = 170;
+        price(price(:,i)<40,i) = 40;
+    end
+end
+
+if strcmp(Handle,'STOPS')==1
+    [I,~] = find(price>150|price<50);
+    REM = unique(I);
+    IND = setdiff(1:simN,unique(REM));
+else
+    IND = 1:simN;
+end
+price = price(IND,:);
+
+return
+\end{verbatim}

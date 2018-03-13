@@ -1,0 +1,39 @@
+\section{The Implied Volatility}
+
+It is well known, that the prices of european call and put options in the Black-Scholes Model are given by:
+\begin{align}
+C_{BS}(S,K,T,r,\sigma)=S\Phi(d_+)-Ke^{-rT}\Phi(d_-)
+\end{align}
+$$P_{BS}(S,K,T,r,\sigma)=Ke^{-rT}\Phi(-d_-)-S\Phi(-d_+)$$
+$$d_+=\frac{log(S/K)+(r+\sigma^2/2)T}{\sigma\sqrt{T}}$$
+$$d_-=d_+-\sigma\sqrt{T}$$
+where $\Phi$ denotes the standard normal cumulative distribution function.
+Before introducing the concept of implied volatility, we want to present some basic properties of $C_{BS}$.\\
+By assumption our market is arbitrage-free by this fact we can easily see, that we have $S-Ke^{-rT}<C(T,K)<S$.
+Furthermore it holds that $\lim_{\sigma\rightarrow 0}C_{BS}(\sigma)=S-Ke^{-rT}$, $\lim_{\sigma\rightarrow +\infty}C_{BS}(\sigma)=S$ and
+$\partial_\sigma C_{BS}>0$\\
+For the limits we just have to consider $d_+$ and $d_-$. We have: $$\lim_{\sigma\rightarrow 0} d_+= \infty,\lim_{\sigma\rightarrow \infty} d_+= \infty, \lim_{\sigma\rightarrow 0} d_-= \infty \text{ and }\lim_{\sigma\rightarrow \infty} d_-= -\infty .$$
+Plugging in in (1) gives the claim since $\Phi$ is a cumulative distribution function. Moreover we have:
+$$\p_\sigma\C=S\p_\sigma\Phi(d_+)-e^{-rT}K\p_\sigma\Phi(d_-)=S\phi(d_+)\p_\sigma d_+-e^{-rT}K\phi(d_-)\p_\sigma d_- $$
+$$d_+(S\phi(d_+)-e^{-rT}K\phi(d_-))+e^{-rT}K\sqrt{T}\phi(d_-)=e^{-rT}K\sqrt{T}\phi(d_-)>0,$$
+where the last equation follows from the fact that $S\phi(d_+)=e^{-rT}K\phi(d_-)$. Here $\phi$ denotes the density of the standard normal distribution.\\
+Now we set
+\begin{align}
+C(T,K)=\C(S,K,T,r,\sigma(S,K,T,r)).
+\end{align}
+Because of the results above, equation (2) has exactly one solution $\sigma(S,K,T,r)$ given by
+$$\sigma(S,K,T,r)=\C^{-1}(S,K,T,r,C(T,K)),$$
+where $\C^{-1}(S,K,T,r,\cdot)$ is the inverse of $\C$ as a function of $\sigma$.
+Such a solution is called Black-Scholes implied volatility.\\
+Since for Put and Call options with the same maturity and the same strike price the implied volatility of the Put Option coincides with the implied volatility of the Call Option talking about vanilla options is meaningful.\\
+The statment above is a consequence of the put-call-parity. Indeed we have:
+\begin{align*}
+\C-P_{BS}&=S\Phi(d_+)-Ke^{-rT}\Phi(d_-)-Ke^{-rT}\Phi(-d_-)+S\Phi(-d_+)\\
+&=S(\Phi(d_+)+\Phi(-d_+))-Ke^{-rT}(\Phi(d_-)+\Phi(d_-))\\
+&=S-Ke^{-rT}
+\end{align*}
+Assume now, that the implied volatility of the put and the call do not coincide, then we get:
+$\C-P_{BS}\neq S-Ke^{-rT}$ which contradicts the put-call-parity.\\
+However the observed return distributions are asymetric (skewed) and fat-tailed which means, that for different K and T a different amount of options will end in the money, than Black-Scholes Model would predict. 
+Because of the one-to-one correspondence between price and volatility (seen above) one could say, that the implied volatility is just a different mathematical expression for the price.\\
+In practice finding the implied volatility is the most common usage of the Black-Scholes formular. This is usefull to detect how market implied volatility differs from a constant (as assumed in the Black-Scholes Model) and to analyse how the observed price distribuion implied by the market differs from log-normal. These observations can be used to find models, which fit better to the market.

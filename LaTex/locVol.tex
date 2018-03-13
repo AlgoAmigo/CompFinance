@@ -1,0 +1,38 @@
+\section{Local Volatility}
+In the section above we saw that the volatility surface is not flat and varies with the passing of time. This implies that the asset volatility is not constant, but stochastic. One can show that one can define a stoctic process $\sigma_t$ for the asset brownian diffusion volatility, which is consistent with the observed market implied volatility. The process $\sigma_t$ is called local volatility. In fact the local volatility is a stochastic process which represents the asset dynamics, which are consistent with the observed market behaviour.\\
+Since $\sigma_t$ depends of the observe market data it should not be used in a predictive way.\\
+The following procedure describes how local volatility is used in practice for pricing using the well known Dupire equation:
+$$\frac{\p C}{\p t}=\frac{\sigma_t^2 K^2}{2}\frac{\p^2 C}{\p^2 K}-\mu K \frac{\p C}{\p K}+(\mu-r)C.$$
+\begin{enumerate}
+\item Observe the volatility surface,
+\item Interpolate the volatilities at the missing strikes,
+\item Use Dupire to calculate $\sigma_t(K)$ for all maturities $t$ and strikes $K$,
+\item substitute $\sigma_t$ in $dS_t=\mu Sdt + \sigma_t(S_t)dB_t$ to get the asset dynamics.
+\end{enumerate}
+
+
+\subsection{Implied Volatility as an "Average" of Local Volatility}
+Before stating the result we have to introduce some notation. In the following we will denote 
+$$x(K,S)=log(\frac{K}{Se^{\mu t}}).$$
+Now we can express our observed call price in termes of $x$:
+$$C(K,t)=C(Se^{x(K,S)+\mu t},t)$$
+By the chain rule we have the following:
+$$\frac{\p C}{\p t}=\frac{\p C}{\p t}+\mu\frac{\p C}{\p x},~\frac{\p C}{\p K}=\frac{1}{K}\frac{\p C}{\p x}\text{ and }\frac{\p^2 C}{\p^2 K}=\frac{1}{K^2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x}).$$
+Now we plug in in the above stated Dupire equation and get:
+\begin{align}\frac{\p C}{\p t}=\frac{\sigma_t^2}{2}(\frac{\p^2 C}{\p^2 x}-\frac{\p C}{\p x})+(\mu-r)C\end{align}
+As the observed price we can express the implied volatility $I(x,t)$ as a funcion of $x$. After some calculations involving the chain rule and setting $C(x,t)=\C(K,t,I(x,t))$, together with equation (3) we get:
+\begin{align}2tI\frac{\p I}{\p t}+I^2-\sigma_t^2(1-\frac{x}{I}\frac{\p I}{\p x})^2-\sigma_t^2 t I\frac{\p^2 I}{\p^2 x}+ \frac{\sigma_t^2}{4}t^2I^2\frac{\p^2I}{\p^2x}=0\end{align}
+Resubstituting $I(x,t)=I(\log(\frac{K}{Se^{\mu t}}),t)$ and applying the chain rule again yields:
+$$\frac{\p I}{\p t}= \frac{\p I}{\p t}+\mu K \frac{\p I}{\p K},~ \frac{\p I}{\p x}= K\frac{\p I}{\p K}\text{ and } \frac{\p^2 I}{\p^2 x}=K^2(\frac{\p I}{\p K}+\frac{\p^2 I}{\p^2 K})$$
+Now we can solve (4) for $\sigma_t$ and get:
+$$\sigma_t^2=\frac{2tI(\frac{\p I}{\p t}+\mu K\frac{\p I}{\p K})+I^2}{(1+d_+K\sqrt{t}\frac{\p I}{\p K})^2 + tI^2K^2(\frac{\p^2 I}{\p^2 K}-d_+(\frac{\p}{K})^2\sqrt{t})}$$
+If we now assume that $\lim_{x \rightarrow \pm \infty}\sigma(x)=\sigma^\pm$ exists uniformly and is continuous in $t$ the derivatives depending on $x$ in (4) cancel and we get the following much nicer expression:
+$$(\sigma_t^\pm)^2=2tI\frac{\partial I}{\partial t} + I^2=\frac{\partial}{\partial t}(tI^2)$$
+The fundamental theorem of calculus yields:
+$$I^2(t,x)=\frac{1}{t}\int_{0}^t(\sigma_u^\pm)^2du$$
+This means, that the implied volatility is approximately the time average of the local volatility for large strikes.
+Now let $t \rightarrow 0$. Then we get
+$$I^2-\sigma_0^2( 1-\frac{x}{I}\frac{\partial I}{\partial x})^2.$$
+The differential equation above has the solution:
+$$I^2(0,x)=\frac{x}{\int_0^x\frac{1}{\sigma_0^2(u)}du}.$$
+The interpretation of the last statement ist that at a very short maturity the implied volatility at log-forwad-moneyness (this is our $x$ defined above) is the harmonic mean of the local volatility.

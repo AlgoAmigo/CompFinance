@@ -1,9 +1,8 @@
-%% Implied Volatility
 function [surf, prices] = ImplVolSurf(S0, K, T, r, q, params, model)
 %Creating the implied volatility surface for a prespecified model.
-%(Problem 4a)
 
 %S0: starting price
+%K: strike of simulation
 %T: time horizon of simulation
 %r: riskfree rate
 %q: dividend yield
@@ -26,7 +25,7 @@ switch(model)
                 % calculating the price for different strikes K and
                 % maturities T with Lewis Method
                 prices(i,j) = CallPricingLewis(S0, K(j), T(i), r, q, params, im, model);
-                surf(i,j) = BSimpVolNewton(S0, K(j), T(i), r, prices(i,j), q);
+                surf(i,j) = BSimpVolFzero(S0, K(j), T(i), r, prices(i,j), q);
             end
         end
     otherwise

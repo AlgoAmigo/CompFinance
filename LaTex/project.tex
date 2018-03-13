@@ -39,6 +39,8 @@
 \else   
 \fi
 
+\newcommand{\C}{C_{BS}}
+\newcommand{\p}{\partial}
 
 \begin{document}
 
@@ -104,17 +106,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{abstract}
-\input{intro}
+\input{setup}
+\input{implVol}
+\input{volSurf}
+\input{locVol}
+\input{implementation}
 
 \appendix
 
-\input{appendix}
+\input{modCode}
+\input{otherCode}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    End of the main document              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\bibliographystyle{abbrvdin}
-\bibliography{refs}
+%\bibliographystyle{abbrvdin}
+%\bibliography{refs}
 
 \end{document}
